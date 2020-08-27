@@ -12,9 +12,6 @@ PoolTool buddies list.
 
 You also need to replace mentions of "mainnet-topology.json" in get_buddies.sh
 and relay-topology_pull.sh with "pt-topology.json" and "cnt-topology.json".
-
-It might be a good idea to add this script to your "crontab -e":
-0 0 * * * usr/bin/bash/ ${HOME}/cardano-my-node/updateTopology.sh
 COMMENT
 
 # cardano-node home folder
@@ -55,6 +52,7 @@ rm -f ${DIRECTORY}/pt-topology.json
 rm -f ${DIRECTORY}/cnt-topology.json
 
 # Restart cardano-node by killing the tmux session
-tmux kill-session -t $SESSION
-/usr/bin/tmux new -d -s $SESSION
-/usr/bin/tmux send-keys -t $SESSION ${DIRECTORY}/startRelayNode2.sh Enter
+# IMPORTANT: ONLY UNCOMMENT BELOW ROWS IF YOU HAVE MORE THAN ONE ACTIVE RELAY!
+#tmux kill-session -t $SESSION
+#/usr/bin/tmux new -d -s $SESSION
+#/usr/bin/tmux send-keys -t $SESSION ${DIRECTORY}/startRelayNode2.sh Enter
