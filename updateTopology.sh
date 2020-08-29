@@ -1,29 +1,27 @@
-#!/usr/bin/env bash
-: <<'COMMENT'
-This script is based of the following guide:
-https://www.coincashew.com/coins/overview-ada/guide-how-to-build-a-haskell-stakepool-node
+#!/bin/bash
+# This script is based of the following guide:
+# https://www.coincashew.com/coins/overview-ada/guide-how-to-build-a-haskell-stakepool-node
 
-Remove connections to your own nodes (and IOHK) from one of your topologies
-either on https://pooltool.io through the UI or by removing everything in the
-string behind "&customPeers=" in the file "relay-topology_pull.sh".
+# Remove connections to your own nodes (and IOHK) from one of your topologies
+# either on https://pooltool.io through the UI or by removing everything in the
+# string behind &customPeers= in the file relay-topology_pull.sh
 
-You might also want to avoid adding relays from the CNTools topology to your
-PoolTool buddies list.
+# You might also want to avoid adding relays from the CNTools topology to your
+# PoolTool buddies list
 
-You also need to replace mentions of "mainnet-topology.json" in get_buddies.sh
-and relay-topology_pull.sh with "pt-topology.json" and "cnt-topology.json".
-COMMENT
+# You also need to replace mentions of mainnet-topology.json in get_buddies.sh
+# and relay-topology_pull.sh with pt-topology.json and cnt-topology.json
 
 # cardano-node home folder
-DIRECTORY=$NODE_HOME
+DIRECTORY=/home/kaze/cardano-relay1
 
 # Name of tmux session running cardano-node
-SESSION="relay2"
+SESSION="relay1"
 
 # Pull PoolTool and CNTools topologies
-/bin/bash ${DIRECTORY}/get_buddies.sh
+bash ${DIRECTORY}/get_buddies.sh
 PT_TOPOLOGY=${DIRECTORY}/pt-topology.json
-/bin/bash ${DIRECTORY}/relay-topology_pull.sh
+bash ${DIRECTORY}/relay-topology_pull.sh
 CNT_TOPOLOGY=${DIRECTORY}/cnt-topology.json
 
 # Remove the first two lines from PoolTool topology
@@ -50,9 +48,3 @@ jq . $TMP > ${DIRECTORY}/mainnet-topology.json
 rm -f $TMP
 rm -f ${DIRECTORY}/pt-topology.json
 rm -f ${DIRECTORY}/cnt-topology.json
-
-# Restart cardano-node by killing the tmux session
-# IMPORTANT: ONLY UNCOMMENT BELOW ROWS IF YOU HAVE MORE THAN ONE ACTIVE RELAY!
-#tmux kill-session -t $SESSION
-#/usr/bin/tmux new -d -s $SESSION
-#/usr/bin/tmux send-keys -t $SESSION ${DIRECTORY}/startRelayNode2.sh Enter
