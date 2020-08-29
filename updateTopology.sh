@@ -13,8 +13,7 @@
 # and relay-topology_pull.sh with pt-topology.json and cnt-topology.json
 
 # cardano-node home folder
-DIRECTORY=/home/kaze/cardano-relay1
-
+DIRECTORY=$NODE_HOME
 # Name of tmux session running cardano-node
 SESSION="relay1"
 
